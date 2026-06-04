@@ -1,6 +1,15 @@
+import geopandas as gpd
 import math
-from typing import List, Any, Callable, Tuple
+import os
+import zipfile
 
+from typing import List, Any, Callable, Tuple
+from urllib.request import urlopen
+from shapely.geometry.multipolygon import MultiPolygon
+from pandas import Series
+
+"""
+PROJECT_ROOT_DIRECTORY = os.path.pardir
 
 def order_items_indexes_ascending(items: List[Any], value_getter: Callable[[Any], Any]) -> List[int]:
     ordered_ascending_indexes: List[int] = [0]
@@ -44,3 +53,76 @@ def split_shape_polygon_parts(points: List[Tuple[int]], parts_start_indexes: Lis
             parts_points.append(points[parts_start_indexes[index]:parts_start_indexes[index + 1] - 1])
 
     return parts_points
+
+"""
+
+def download_binary_file_http(remote_url: str, local_file_path: str) -> None:
+    with urlopen(url=remote_url) as response:
+
+        if response.status >= 300:
+            print(f"Error status returned attempting to download file: {remote_url}")
+
+        buffer = bytearray(2000)
+
+        with open(local_file_path, 'wb') as local_file:
+
+            while (bytes_read := response.readinto(buffer)) > 0:
+                local_file.write(buffer[:bytes_read])
+
+
+def extract_zip(zip_path: str, extract_dir_path: str) -> None:
+    with zipfile.ZipFile(zip_path) as z:
+        z.extractall(path=extract_dir_path)
+
+
+def geodb_to_shapefile(gdb_path: str, layer_name: str, shp_out: str, crs: str = "EPSG:4326"):
+
+    # 1. Read the GDB layer into a GeoDataFrame
+    gdf = gpd.read_file(gdb_path, driver="OpenFileGDB", layer=layer_name)
+
+    # 2. Convert to the desired CRS (Example: EPSG 4326 for WGS 84)
+    # You can use EPSG codes, WKT strings, or Proj4 strings
+    projected_gdf = gdf.to_crs(crs=crs)
+
+    # 3. Export to Shapefile
+    projected_gdf.to_file(shp_out, driver="ESRI Shapefile")
+
+    print(f"Successfully converted and reprojected to {shp_out}")
+
+
+def convert_shapefile_crs(shp_in: str, crs: str, shp_out: str) -> None:
+    # Load your shapefile
+    gdf = gpd.read_file(shp_in)
+
+    # Convert to a new CRS (e.g., EPSG:3857 for WGS 84 latitude/longitude)
+    gdf_reprojected = gdf.to_crs(crs=crs)
+
+    # Save the converted GeoDataFrame back to a new shapefile
+    gdf_reprojected.to_file(shp_out)
+
+
+def clip_shapefile_to_single_polygon(shp_to_clip: str, shp_out: str, polygons_overlap: MultiPolygon, polygon_crs: str) -> None:
+
+    # 1. Load the shapefile you want to clip
+    gdf_to_clip = gpd.read_file(shp_to_clip)
+
+    if polygon_crs != gdf_to_clip:
+        print("CRS do not match, skipping!")
+        return
+
+    # 2. Perform the clip
+    clipped_gdf = gpd.clip(gdf_to_clip, polygons_overlap)
+
+    if clipped_gdf.empty:
+        print("clipped shapefile is empty, will not write: {shp_out}"
+        return
+
+    # 3. Save the resulting GeoDataFrame to a new shapefile
+    clipped_gdf.to_file(shp_out)
+
+
+def iterate_shapefile_records(shp_in: str, func: Callable[[Series], None]) -> None:
+    gdf = gpd.read_file(shp_in)
+
+    for s in gdf.iloc:
+        func(s)
