@@ -1,12 +1,9 @@
-import LocalizedText from "@/components/LocalizedText";
-import ThemedView from "@/components/ThemedView";
+import { Map } from "@maplibre/maplibre-react-native";
 import React from "react";
 
 const LandsMap = () => {
   return (
-    <ThemedView>
-      <LocalizedText component="landsmap" identifier="title" />
-    </ThemedView>
+    <Map mapStyle="https://raw.githubusercontent.com/go2garret/maps/main/src/assets/json/openStreetMap.json" />
   );
 };
 

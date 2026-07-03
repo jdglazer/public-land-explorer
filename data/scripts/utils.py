@@ -114,7 +114,7 @@ def clip_shapefile_to_single_polygon(shp_to_clip: str, shp_out: str, polygons_ov
     clipped_gdf = gpd.clip(gdf_to_clip, polygons_overlap)
 
     if clipped_gdf.empty:
-        print("clipped shapefile is empty, will not write: {shp_out}"
+        print("clipped shapefile is empty, will not write: {shp_out}")
         return
 
     # 3. Save the resulting GeoDataFrame to a new shapefile

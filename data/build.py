@@ -114,16 +114,46 @@ def split_land_shape_files():
             
     iterate_shapefile_records(shp_in=US_STATES_SHAPE_SHP, func=handle_state_record)
 
+US_STATE_OSM_PBF_DOWNLOAD_URL_FMT = "https://download.geofabrik.de/north-america/us/{0}-latest.osm.pbf"
+
+US_STATE_NAMES = ["alabama", "alaska", "arizona", "arkansas", "california", "colorado", "connecticut", "delaware", "district of columbia", "florida", "georgia", "hawaii", "idaho", "illinois", "indiana", "iowa", "kansas", "kentucky", "louisiana", "maine", "maryland", "massachusetts", "michigan", "minnesota", "mississippi", "missouri", "montana", "nebraska", "nevada", "new hampshire", "new jersey", "new mexico", "new york", "north carolina", "north dakota", "ohio", "oklahoma", "oregon", "pennsylvania", "rhode island", "south carolina", "south dakota", "tennessee", "texas", "utah", "vermont", "virginia", "washington", "west virginia", "wisconsin", "wyoming"]
+
+NORTH_AMERCIA_OSM_PBF_OUT_DIR_PATH = os.path.join("E:", "osm_pbfs")
+US_STATE_OSM_PBF_OUT_DIR_PATH = os.path.join(NORTH_AMERCIA_OSM_PBF_OUT_DIR_PATH, "us")
+
+def download_all_state_osm() -> None:
+    if not os.path.exists(US_STATE_OSM_PBF_OUT_DIR_PATH):
+        os.makedirs(US_STATE_OSM_PBF_OUT_DIR_PATH)
+
+    for state_name in US_STATE_NAMES:
+        print(f"Downloading {state_name} osm pbf data")
+
+        pbf_url = US_STATE_OSM_PBF_DOWNLOAD_URL_FMT.format(state_name.replace(" ", "-"))
+
+        out_file_path = os.path.join(US_STATE_OSM_PBF_OUT_DIR_PATH, f"{state_name}.osm.pbf")
+    
+        download_binary_file_http(remote_url=pbf_url, local_file_path=out_file_path)
+
+NORTH_AMERICA_OSM_PBF_DOWNLOAD_URL = "https://download.geofabrik.de/north-america-latest.osm.pbf"
+NORTH_AMERICA_OSM_PBF_FILE_OUT_PATH = os.path.join(NORTH_AMERCIA_OSM_PBF_OUT_DIR_PATH, "north-america.osm.pbf")
+
+def download_north_america_osb() -> None:
+
+    if not os.path.exists(NORTH_AMERCIA_OSM_PBF_OUT_DIR_PATH):
+        os.makedirs(NORTH_AMERCIA_OSM_PBF_OUT_DIR_PATH)
+
+    download_binary_file_http(remote_url=NORTH_AMERICA_OSM_PBF_DOWNLOAD_URL, local_file_path=NORTH_AMERICA_OSM_PBF_FILE_OUT_PATH)
+ 
 if __name__ == '__main__':
     #cleanup()
     #build_dir()
 
     #download_datasets()
-    extract_datasets()
+    #extract_datasets()
     
     #convert_state_shape_file_to_epsg_3857()
     #convert_land_management_geodb_to_shapefiles()
-    split_land_shape_files()
+    #split_land_shape_files()
 
     # extract US state boundaries and convert to geojsons
     #extract_zip(US_STATES_SHAPE_ZIP_PATH, US_STATES_SHAPE_EXTRACT_DIR_PATH)
@@ -131,3 +161,6 @@ if __name__ == '__main__':
 
     #extract_zip(US_PUBLIC_LANDS_SHAPE_ZIP_PATH, US_PUBLIC_LANDS_SHAPE_EXTRACT_DIR_PATH)
     #public_lands_to_geo_json()
+    
+    #download_all_state_osm()
+    download_north_america_osb()

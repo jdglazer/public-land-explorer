@@ -17,7 +17,8 @@
         "backgroundImage": "./assets/images/android-icon-background.png",
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.jdglazer.publiclandexplorer"
     },
     "web": {
       "output": "static",
@@ -42,22 +43,27 @@
           "enableFTS": true,
           "useSQLCipher": true,
           "android": {
-            // Override the shared configuration for Android
             "enableFTS": false,
             "useSQLCipher": false
           },
           "ios": {
-            // You can also override the shared configurations for iOS
             "customBuildFlags": [
               "-DSQLITE_ENABLE_DBSTAT_VTAB=1 -DSQLITE_ENABLE_SNAPSHOT=1"
             ]
           }
         }
-      ]
+      ],
+      "@maplibre/maplibre-react-native"
     ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "e9ef6192-f204-453d-916f-a4e4803979ed"
+      }
     }
   }
 }
