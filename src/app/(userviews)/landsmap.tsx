@@ -3,7 +3,7 @@ import React from "react";
 
 const LandsMap = () => {
   return (
-    <Map mapStyle="https://raw.githubusercontent.com/go2garret/maps/main/src/assets/json/openStreetMap.json" />
+    <Map mapStyle="http://192.168.1.58:8080/styles/basemap/style.json" />
   );
 };
 

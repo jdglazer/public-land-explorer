@@ -1,0 +1,1 @@
+export const InitialMapStyleUrl= "http://localhost:8080/styles/public-land-explorer-base-style.json";

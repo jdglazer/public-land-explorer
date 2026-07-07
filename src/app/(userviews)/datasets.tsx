@@ -4,7 +4,7 @@ import { FlatList, StyleSheet, Text } from "react-native";
 const datasets = () => {
   let data = [
     { id: "1", name: "hello" },
-    { id: "1", name: "world" },
+    { id: "2", name: "world" },
   ];
   return (
     <FlatList
