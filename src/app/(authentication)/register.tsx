@@ -4,7 +4,7 @@ import ThemedForm from "@/components/ThemedForm";
 import ThemedLink from "@/components/ThemedLink";
 import ThemedTextInput from "@/components/ThemedTextInput";
 import { getLocalizedText } from "@/hooks/getLocalizedText";
-import { useUserContext } from "@/hooks/useUser";
+import { useUserContext } from "@/hooks/useUserContext";
 import { useState } from "react";
 
 const Register = () => {

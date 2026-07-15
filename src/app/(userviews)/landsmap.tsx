@@ -1,5 +1,18 @@
-import { Camera, LogManager, OfflineManager, Map, MapRef, PressEvent, PressEventWithFeatures} from "@maplibre/maplibre-react-native";
-import React, { useRef } from "react";
+import { useUserContext } from "@/hooks/useUserContext";
+import { 
+  Camera,
+  LogManager, 
+  OfflineManager,
+  Map,
+  MapRef,
+  PressEvent, 
+  PressEventWithFeatures,
+  TransformRequestManager,
+  LocationManager,
+  UserLocation
+}
+from "@maplibre/maplibre-react-native";
+import React, { useEffect, useRef } from "react";
 import { NativeSyntheticEvent } from "react-native";
 
 const LandsMap = () => {
@@ -23,12 +36,41 @@ const LandsMap = () => {
   }
 
   setAmbientCacheSize();
-  
+
+  const {getIdToken} = useUserContext();
+
+  // We can't get here until we've passed authchecked which means we'll have at least tried to get a token
+
+  const setBearerToken = async () => {
+    let idToken = await getIdToken();
+
+    if (idToken) {
+      TransformRequestManager.addHeader({
+        id: 'auth',
+        name: "Authorization",
+        value: "Bearer " + idToken
+      });
+    }
+  };
+
+  const setupLocationManagement = async () => {
+    let locPermissions = await LocationManager.requestPermissions();
+    console.log("Location permissions: ", locPermissions);
+    let position = await LocationManager.getCurrentPosition();
+    console.log("Position: ", position);
+  }
+
+  useEffect(() => {
+    setupLocationManagement();
+    setBearerToken();
+  }, [])
+
   return (
     <Map ref={mapRef}
          mapStyle="http://192.168.1.58/styles/basemap/style.json"
          onPress={handleMapPress}>
-      <Camera initialViewState={{zoom: 2,  center: [-110.75, 44.5]}}></Camera>
+      <Camera initialViewState={{zoom: 2,  center: [-110.75, 44.5]}} trackUserLocation="default"></Camera>
+      <UserLocation/>
     </Map>
   );
 };

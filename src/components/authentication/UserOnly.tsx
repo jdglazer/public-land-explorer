@@ -1,4 +1,4 @@
-import { useUserContext } from "@/hooks/useUser";
+import { useUserContext } from "@/hooks/useUserContext";
 import { Redirect } from "expo-router";
 import { ReactNode } from "react";
 import ThemedLoader from "../ThemedLoader";

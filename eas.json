@@ -8,7 +8,7 @@
       "developmentClient": true,
       "distribution": "internal",
       "env": {
-        "ANDROID_HOME": "C:\\Users\\jdglazer\\AppData\\Local\\Android\\Sdk"
+        "ANDROID_HOME": "/home/josh/Android/Sdk"
       }
     },
     "preview": {

@@ -2,24 +2,20 @@ import LocalizedText from "@/components/LocalizedText";
 import ThemedButton from "@/components/ThemedButton";
 import ThemedView from "@/components/ThemedView";
 import { getLocalizedText } from "@/hooks/getLocalizedText";
-import { useUserContext } from "@/hooks/useUser";
+import { useUserContext } from "@/hooks/useUserContext";
 import React from "react";
 
 const Settings = () => {
-  const { logout } = useUserContext();
+  const { logoutGoogle} = useUserContext();
 
   const handleLogout = async () => {
-    await logout();
+    await logoutGoogle();
   };
 
   return (
     <ThemedView>
       <LocalizedText component="settings" identifier="title" />
-      <ThemedButton
-        text={getLocalizedText("settings", "logout")}
-        onPress={handleLogout}
-        disabledOnPress={true}
-      />
+      <ThemedButton onPress={handleLogout} text={getLocalizedText("settings", "logout")} />
     </ThemedView>
   );
 };

@@ -1,13 +1,13 @@
-import GuestOnly from "@/components/authentication/GuestOnly";
 import { getLocalizedText } from "@/hooks/getLocalizedText";
 import { Tabs } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
+import UserOnly from "@/components/authentication/UserOnly";
 
 const UserViewsRoot = () => {
   return (
-    <GuestOnly>
+    <UserOnly>
       <StatusBar style="auto" />
       <Tabs screenOptions={{ headerShown: false, tabBarStyle: {height: 70} }}>
         <Tabs.Screen
@@ -29,7 +29,7 @@ const UserViewsRoot = () => {
            }}
         />
       </Tabs>
-    </GuestOnly>
+    </UserOnly>
   );
 };
 
