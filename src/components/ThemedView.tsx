@@ -1,3 +1,4 @@
+import { COLORS } from "@/constants/styles/ColorThemes";
 import { getColorTheme } from "@/hooks/getColorTheme";
 import React from "react";
 import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
@@ -19,7 +20,7 @@ const ThemedView = ({ style, ...props }: ThemedViewProps) => {
         {
           paddingTop: insets.top,
           paddingBottom: insets.bottom,
-          backgroundColor: colorThemeStyles.backgroundColor,
+          backgroundColor: COLORS.background,
         },
         styles.container,
         style,

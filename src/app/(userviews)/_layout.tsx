@@ -4,12 +4,13 @@ import { StatusBar } from "expo-status-bar";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import UserOnly from "@/components/authentication/UserOnly";
+import { COLORS } from "@/constants/styles/ColorThemes";
 
 const UserViewsRoot = () => {
   return (
     <UserOnly>
       <StatusBar style="auto" />
-      <Tabs screenOptions={{ headerShown: false, tabBarStyle: {height: 70} }}>
+      <Tabs screenOptions={{ headerShown: false, tabBarInactiveTintColor: COLORS.text, tabBarActiveTintColor: COLORS.accent, tabBarStyle: {height: 72, backgroundColor: COLORS.primary} }}>
         <Tabs.Screen
           name="landsmap"
           options={{ title: getLocalizedText("landsmap", "title"),
