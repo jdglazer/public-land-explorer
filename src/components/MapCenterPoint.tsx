@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { StyleSheet, View } from "react-native";
 import { COLORS } from "@/constants/styles/ColorThemes";
-import IconPlusOpenMiddle from "./IconPlusOpenMiddle";
+import IconPlusOpenMiddle from "./icons/IconPlusOpenMiddle";
 
 interface MapCenterPointProps {
     children?: ReactNode;

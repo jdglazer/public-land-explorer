@@ -17,18 +17,19 @@ export interface FadeOutViewRef {
 }
 
 const FadeOutView = forwardRef<FadeOutViewRef, FadeOutViewProps>(({children, style, initialVisibility, delay, fadeTime, ...props}: FadeOutViewProps, ref) => {
-  const [visible, setVisible] = useState(initialVisibility);
-  const opacity = useSharedValue(1);
+  const pointerEvents = useSharedValue<"box-none"|"none"|"auto"|"box-only"|undefined>("box-none");
+  const opacity = useSharedValue(initialVisibility ? 1 : 0);
 
   useImperativeHandle(ref, () => ({
     setVisible: () => {
-      setVisible(true);
       resetFade();
     }
   }));
 
   const resetFade = () => {
     opacity.value = 1;
+    pointerEvents.value = "box-none";
+
     opacity.value = withDelay(delay*1000, 
       withTiming(
         0.0,
@@ -36,21 +37,23 @@ const FadeOutView = forwardRef<FadeOutViewRef, FadeOutViewProps>(({children, sty
           duration: fadeTime * 1000,
           easing: Easing.linear
         },
-        (finished) => {if (finished) runOnJS(setVisible)(false);}
+        (finished) => {
+          if (finished) pointerEvents.value = "none";
+        }
       )
     );
   };
 
-  const animatedStyle = useAnimatedStyle(
+  const animatedOpacity = useAnimatedStyle(
     () => ({
-        opacity: opacity.value
+      opacity: opacity.value,
+      pointerEvents: pointerEvents.value
     })
   );
 
   return (
-      visible &&
       <Animated.View style={[
-        animatedStyle,
+        animatedOpacity,
         style
       ]} {...props}>
         {children}
